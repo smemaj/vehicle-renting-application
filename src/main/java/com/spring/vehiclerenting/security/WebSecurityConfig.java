@@ -1,5 +1,6 @@
 package com.spring.vehiclerenting.security;
 
+import com.spring.vehiclerenting.security.jwt.AuthTokenFilter;
 import com.spring.vehiclerenting.security.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
