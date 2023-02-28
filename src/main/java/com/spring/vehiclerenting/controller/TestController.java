@@ -1,15 +1,28 @@
 package com.spring.vehiclerenting.controller;
 
+import com.spring.vehiclerenting.model.User;
+import com.spring.vehiclerenting.repository.RoleRepository;
+import com.spring.vehiclerenting.repository.UserRepository;
+import com.spring.vehiclerenting.security.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/test")
 public class TestController {
+
+    @Autowired
+    private UserService userService;
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
+
     @GetMapping("/all")
     public String allAccess() {
         return "Public Content.";
@@ -26,4 +39,10 @@ public class TestController {
     public String adminAccess() {
         return "Admin Board.";
     }
+
+//    @PutMapping("/{username}/{password}")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+//    public void updatePassword(@PathVariable("username") String username, @PathVariable("password") String password){
+//        this.userService.updatePassword(username, password);
+//    }
 }
