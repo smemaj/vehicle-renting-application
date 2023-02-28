@@ -52,4 +52,19 @@ public class UserServiceImpl implements UserService {
             System.out.println("false");
         }
     }
+
+    @Override
+    public void updateUser(String username, String newUsername, String newEmail, String newPhone) {
+        User user = this.userRepository.findByUsername(username);
+        user.setUsername(newUsername);
+        user.setEmail(newEmail);
+        user.setPhone(newPhone);
+        this.userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(String username) {
+        User user = this.userRepository.findByUsername(username);
+        this.userRepository.delete(user);
+    }
 }

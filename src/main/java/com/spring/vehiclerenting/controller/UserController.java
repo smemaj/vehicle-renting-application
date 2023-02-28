@@ -1,8 +1,10 @@
 package com.spring.vehiclerenting.controller;
 
 
+import com.spring.vehiclerenting.payload.request.DeleteUser;
 import com.spring.vehiclerenting.payload.request.Login;
 import com.spring.vehiclerenting.payload.request.PasswordUpdate;
+import com.spring.vehiclerenting.payload.request.UserUpdate;
 import com.spring.vehiclerenting.payload.response.MessageResponse;
 import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
@@ -54,6 +56,30 @@ public class UserController {
         }
         this.userService.updatePassword(passwordUpdate.getUsername(), passwordUpdate.getOldPassword(), passwordUpdate.getNewPassword());
         return ResponseEntity.ok(new MessageResponse("User password updated successfully!"));
+    }
+
+    @PutMapping("/updateUser")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdate userUpdate){
+        if (!userRepository.existsByUsername(userUpdate.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User with this username does not exist!"));
+        }
+        this.userService.updateUser(userUpdate.getUsername(), userUpdate.getNewUsername(), userUpdate.getEmail(), userUpdate.getPhone());
+        return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
+    }
+
+    @DeleteMapping("/deleteUser")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteUser(@Valid @RequestBody DeleteUser deleteUser){
+        if (!userRepository.existsByUsername(deleteUser.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User with this username does not exist!"));
+        }
+        this.userService.deleteUser(deleteUser.getUsername());
+        return ResponseEntity.ok(new MessageResponse("User deleted successfully!"));
     }
 
 }
