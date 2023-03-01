@@ -33,6 +33,26 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinTable(	name = "rent_applications",
+//            joinColumns = @JoinColumn(name = "vehicle_id"),
+//            inverseJoinColumns = @JoinColumn(name = "application_id"))
+    private Set<Application> applications = new HashSet<>();
+
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinTable(	name = "rent_applications",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "application_id"))
+//    private Set<Application> applications = new HashSet<>();
+
+    public Set<Application> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(Set<Application> applications) {
+        this.applications = applications;
+    }
+
     public User() {
     }
 
