@@ -1,7 +1,10 @@
 package com.spring.vehiclerenting.security.service;
 
+import com.spring.vehiclerenting.model.Role;
 import com.spring.vehiclerenting.model.User;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 
 public interface UserService {
@@ -20,5 +23,7 @@ public interface UserService {
     public void updateUser(String username, String newUsername, String newEmail, String newPhone);
 
     public void deleteUser(String username);
+
+    public void createUser(String username, String password, String email, String phone, Set<Role> roles);
 }
 

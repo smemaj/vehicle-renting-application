@@ -1,10 +1,7 @@
 package com.spring.vehiclerenting.controller;
 
 
-import com.spring.vehiclerenting.payload.request.DeleteUser;
-import com.spring.vehiclerenting.payload.request.Login;
-import com.spring.vehiclerenting.payload.request.PasswordUpdate;
-import com.spring.vehiclerenting.payload.request.UserUpdate;
+import com.spring.vehiclerenting.payload.request.*;
 import com.spring.vehiclerenting.payload.response.MessageResponse;
 import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
@@ -12,6 +9,7 @@ import com.spring.vehiclerenting.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,6 +26,9 @@ public class UserController {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    PasswordEncoder encoder;
 
     @GetMapping("/all")
     public String allAccess() {
@@ -60,11 +61,16 @@ public class UserController {
 
     @PutMapping("/updateUser")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdate userUpdate){
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdate userUpdate) {
         if (!userRepository.existsByUsername(userUpdate.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: User with this username does not exist!"));
+        }
+        if (userRepository.existsByEmail(userUpdate.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User with this email already exists!"));
         }
         this.userService.updateUser(userUpdate.getUsername(), userUpdate.getNewUsername(), userUpdate.getEmail(), userUpdate.getPhone());
         return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
@@ -80,6 +86,23 @@ public class UserController {
         }
         this.userService.deleteUser(deleteUser.getUsername());
         return ResponseEntity.ok(new MessageResponse("User deleted successfully!"));
+    }
+
+    @PostMapping("/createUser")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUser createUser){
+        if (userRepository.existsByUsername(createUser.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User with this username already exists!"));
+        }
+        if (userRepository.existsByEmail(createUser.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User with this email already exists!"));
+        }
+        this.userService.createUser(createUser.getUsername(), encoder.encode(createUser.getPassword()), createUser.getEmail(), createUser.getPhone(), createUser.getRoles());
+        return ResponseEntity.ok(new MessageResponse("User added successfully!"));
     }
 
 }

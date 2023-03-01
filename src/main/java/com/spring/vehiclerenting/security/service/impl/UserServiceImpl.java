@@ -1,5 +1,6 @@
 package com.spring.vehiclerenting.security.service.impl;
 
+import com.spring.vehiclerenting.model.Role;
 import com.spring.vehiclerenting.model.User;
 import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -66,5 +68,11 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(String username) {
         User user = this.userRepository.findByUsername(username);
         this.userRepository.delete(user);
+    }
+
+    @Override
+    public void createUser(String username, String password, String email, String phone, Set<Role> roles) {
+        User user = new User(username, password, email, phone, roles);
+        this.userRepository.save(user);
     }
 }

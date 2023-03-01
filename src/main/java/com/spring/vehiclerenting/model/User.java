@@ -42,6 +42,15 @@ public class User {
         this.email = email;
     }
 
+    public User(@NonNull String username, @NonNull String password, @NonNull String email, String phone, Set<Role> roles) {
+
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.roles = roles;
+    }
+
     public Long getId() {
         return id;
     }
