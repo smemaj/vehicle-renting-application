@@ -18,7 +18,7 @@ public class Application {
     private String status;
 
     @NotNull
-    private Date creationDate;
+    private Date creationDate=new Date();
 
     @ManyToOne
 //    @JoinTable(	name = "rent_applications",
@@ -30,6 +30,10 @@ public class Application {
     private User user;
 
     public Application() {
+    }
+
+    public Application(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
     public Application(String status, Date creationDate) {

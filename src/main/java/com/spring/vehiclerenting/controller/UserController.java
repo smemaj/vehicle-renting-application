@@ -5,6 +5,7 @@ import com.spring.vehiclerenting.payload.request.*;
 import com.spring.vehiclerenting.payload.response.MessageResponse;
 import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
+import com.spring.vehiclerenting.security.service.ApplicationService;
 import com.spring.vehiclerenting.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +23,16 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    PasswordEncoder encoder;
+    private PasswordEncoder encoder;
+
+    @Autowired
+    private ApplicationService applicationService;
 
     @GetMapping("/all")
     public String allAccess() {
@@ -103,6 +107,14 @@ public class UserController {
         }
         this.userService.createUser(createUser.getUsername(), encoder.encode(createUser.getPassword()), createUser.getEmail(), createUser.getPhone(), createUser.getRoles());
         return ResponseEntity.ok(new MessageResponse("User added successfully!"));
+    }
+
+    @PostMapping("/createApplication")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> createApplication(@Valid @RequestBody CreateApplication createApplication){
+
+        this.applicationService.createApplication(createApplication.getVehicleId());
+        return ResponseEntity.ok(new MessageResponse("Application added successfully!"));
     }
 
 }
