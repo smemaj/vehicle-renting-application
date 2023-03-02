@@ -41,6 +41,14 @@ public class Application {
         this.creationDate = creationDate;
     }
 
+
+    public Application(String status, Date creationDate, Vehicle vehicle, User user) {
+        this.status = status;
+        this.creationDate = creationDate;
+        this.vehicle = vehicle;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }

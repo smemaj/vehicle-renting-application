@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @PutMapping("/updateUser")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdate userUpdate) {
         if (!userRepository.existsByUsername(userUpdate.getUsername())) {
             return ResponseEntity
