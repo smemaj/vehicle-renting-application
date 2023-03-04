@@ -1,5 +1,7 @@
 package com.spring.vehiclerenting.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import javax.validation.constraints.NotNull;
@@ -18,16 +20,27 @@ public class Application {
     private String status;
 
     @NotNull
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date creationDate=new Date();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
 //    @JoinTable(	name = "rent_applications",
 //            joinColumns = @JoinColumn(name = "application_id"),
 //            inverseJoinColumns = @JoinColumn(name = "vehicle_id"))
     private Vehicle vehicle;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private User user;
+
+    @NotNull
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date startDate;
+
+    @NotNull
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date endDate;
 
     public Application() {
     }
@@ -52,6 +65,14 @@ public class Application {
         this.creationDate = creationDate;
         this.vehicle = vehicle;
         this.user = user;
+    }
+
+    public Application(String status, Vehicle vehicle, User user, Date startDate, Date endDate) {
+        this.status = status;
+        this.vehicle = vehicle;
+        this.user = user;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public Long getId() {
@@ -84,6 +105,14 @@ public class Application {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
     }
 
     public User getUser() {

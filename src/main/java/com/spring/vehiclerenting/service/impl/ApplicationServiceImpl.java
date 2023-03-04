@@ -11,8 +11,9 @@ import com.spring.vehiclerenting.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.spring.vehiclerenting.config.filter.AuthTokenFilter;
-import org.springframework.util.StringUtils;
+
+import java.util.*;
+
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -33,24 +34,56 @@ public class ApplicationServiceImpl implements ApplicationService {
     private HttpServletRequest request;
 
     @Override
-    public Application createApplication(Long vehicleId) {
+    public Set<Application> listApplications(){
+        String headerAuth = request.getHeader("Authorization");
+
+        String jwt= headerAuth.substring(7, headerAuth.length());
+
+        String username = jwtUtils.getUserNameFromJwtToken(jwt);
+        User user = this.userRepository.findByUsername(username);
+
+        return user.getApplications();
+    }
+
+    @Override
+    public Application createApplication(Long vehicleId, Date startDate, Date endDate) {
         Vehicle vehicle = this.vehicleRepository.getReferenceById(vehicleId);
 
         String headerAuth = request.getHeader("Authorization");
 
         String jwt= headerAuth.substring(7, headerAuth.length());
 
-        //String jwt = parseJwt(request);
-
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
         User user = this.userRepository.findByUsername(username);
-        //User user = this.userRepository.findByUsername();
-        System.out.println("vehicle id is: "+vehicle);
-        System.out.println("username is: "+username);
-        Application application = new Application("submitted", vehicle, user);
-        System.out.println("application is: "+application);
+
+        Application application = new Application("submitted", vehicle, user, startDate, endDate);
         this.applicationRepository.save(application);
+
+        vehicle.getApplications().add(application);
+        this.vehicleRepository.save(vehicle);
+
+        user.getApplications().add(application);
+        this.userRepository.save(user);
+
         return application;
     }
+
+    @Override
+    public void deleteApplication(Long applicationId) {
+        //Vehicle vehicle = this.vehicleRepository.getReferenceById(vehicleId);
+
+        String headerAuth = request.getHeader("Authorization");
+        String jwt= headerAuth.substring(7, headerAuth.length());
+        String username = jwtUtils.getUserNameFromJwtToken(jwt);
+
+        User user = this.userRepository.findByUsername(username);
+        Application app= this.applicationRepository.getReferenceById(applicationId);
+        Vehicle vehicle=app.getVehicle();
+
+        vehicle.getApplications().remove(app);
+        user.getApplications().remove(app);
+        this.applicationRepository.deleteById(applicationId);
+    }
+
 
 }

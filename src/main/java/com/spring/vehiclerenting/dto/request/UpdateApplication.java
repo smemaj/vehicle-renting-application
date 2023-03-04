@@ -4,15 +4,23 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
-public class CreateApplication {
+public class UpdateApplication {
 
-    private Long vehicleId;
+    private Long appId;
 
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date startDate;
 
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date endDate;
+
+    public Long getAppId() {
+        return appId;
+    }
+
+    public void setAppId(Long appId) {
+        this.appId = appId;
+    }
 
     public Date getStartDate() {
         return startDate;
@@ -28,13 +36,5 @@ public class CreateApplication {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    public Long getVehicleId() {
-        return vehicleId;
-    }
-
-    public void setVehicleId(Long vehicleId) {
-        this.vehicleId = vehicleId;
     }
 }

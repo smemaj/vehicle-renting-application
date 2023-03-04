@@ -109,12 +109,4 @@ public class UserController {
         return ResponseEntity.ok(new MessageResponse("User added successfully!"));
     }
 
-    @PostMapping("/createApplication")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> createApplication(@Valid @RequestBody CreateApplication createApplication){
-
-        this.applicationService.createApplication(createApplication.getVehicleId());
-        return ResponseEntity.ok(new MessageResponse("Application added successfully!"));
-    }
-
 }

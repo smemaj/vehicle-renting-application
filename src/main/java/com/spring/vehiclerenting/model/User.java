@@ -27,13 +27,13 @@ public class User {
     private String email;
     private String phone;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany()
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 //    @JoinTable(	name = "rent_applications",
 //            joinColumns = @JoinColumn(name = "vehicle_id"),
 //            inverseJoinColumns = @JoinColumn(name = "application_id"))
@@ -121,4 +121,5 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
 }

@@ -8,4 +8,9 @@ import java.util.Optional;
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
 
     Optional<Application> findById(Long id);
+
+    @Override
+    void deleteById(Long aLong);
+
+    //    Application findByAppId(Long id);
 }
