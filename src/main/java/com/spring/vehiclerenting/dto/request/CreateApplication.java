@@ -1,4 +1,4 @@
-package com.spring.vehiclerenting.payload.request;
+package com.spring.vehiclerenting.dto.request;
 
 public class CreateApplication {
 

@@ -1,12 +1,12 @@
 package com.spring.vehiclerenting.controller;
 
 
-import com.spring.vehiclerenting.payload.request.*;
-import com.spring.vehiclerenting.payload.response.MessageResponse;
+import com.spring.vehiclerenting.dto.request.*;
+import com.spring.vehiclerenting.dto.response.MessageResponse;
 import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
-import com.spring.vehiclerenting.security.service.ApplicationService;
-import com.spring.vehiclerenting.security.service.UserService;
+import com.spring.vehiclerenting.service.ApplicationService;
+import com.spring.vehiclerenting.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

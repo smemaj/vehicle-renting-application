@@ -1,4 +1,4 @@
-package com.spring.vehiclerenting.security.service.impl;
+package com.spring.vehiclerenting.service.impl;
 
 import com.spring.vehiclerenting.model.User;
 import com.spring.vehiclerenting.repository.UserRepository;

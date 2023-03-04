@@ -1,17 +1,14 @@
-package com.spring.vehiclerenting.security.service.impl;
+package com.spring.vehiclerenting.service.impl;
 
 import com.spring.vehiclerenting.model.Role;
 import com.spring.vehiclerenting.model.User;
 import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
-import com.spring.vehiclerenting.security.service.UserService;
+import com.spring.vehiclerenting.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Service

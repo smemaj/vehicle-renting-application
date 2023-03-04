@@ -10,12 +10,12 @@ import javax.validation.Valid;
 import com.spring.vehiclerenting.model.Role;
 import com.spring.vehiclerenting.model.User;
 import com.spring.vehiclerenting.model.UserRoles;
-import com.spring.vehiclerenting.payload.request.Login;
-import com.spring.vehiclerenting.payload.request.Signup;
+import com.spring.vehiclerenting.dto.request.Login;
+import com.spring.vehiclerenting.dto.request.Signup;
 import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
-import com.spring.vehiclerenting.security.jwt.JwtUtils;
-import com.spring.vehiclerenting.security.service.impl.UserDetailsImpl;
+import com.spring.vehiclerenting.utils.JwtUtils;
+import com.spring.vehiclerenting.service.impl.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.vehiclerenting.payload.response.MessageResponse;
-import com.spring.vehiclerenting.payload.response.JwtResponse;
+import com.spring.vehiclerenting.dto.response.MessageResponse;
+import com.spring.vehiclerenting.dto.response.JwtResponse;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)

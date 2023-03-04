@@ -1,6 +1,4 @@
-package com.spring.vehiclerenting.payload.request;
-
-import org.aspectj.weaver.ast.Not;
+package com.spring.vehiclerenting.dto.request;
 
 import javax.validation.constraints.NotNull;
 

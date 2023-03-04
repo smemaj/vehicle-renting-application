@@ -1,6 +1,7 @@
-package com.spring.vehiclerenting.security.jwt;
+package com.spring.vehiclerenting.config.filter;
 
-import com.spring.vehiclerenting.security.service.impl.UserDetailsServiceImpl;
+import com.spring.vehiclerenting.service.impl.UserDetailsServiceImpl;
+import com.spring.vehiclerenting.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

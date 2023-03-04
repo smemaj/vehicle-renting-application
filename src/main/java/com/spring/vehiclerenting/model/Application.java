@@ -41,6 +41,11 @@ public class Application {
         this.creationDate = creationDate;
     }
 
+    public Application(String status, Vehicle vehicle, User user) {
+        this.status = status;
+        this.vehicle = vehicle;
+        this.user = user;
+    }
 
     public Application(String status, Date creationDate, Vehicle vehicle, User user) {
         this.status = status;

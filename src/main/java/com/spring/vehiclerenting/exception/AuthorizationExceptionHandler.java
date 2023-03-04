@@ -1,4 +1,4 @@
-package com.spring.vehiclerenting.security.jwt;
+package com.spring.vehiclerenting.exception;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class AuthEntryPointJwt implements AuthenticationEntryPoint {
+public class AuthorizationExceptionHandler implements AuthenticationEntryPoint {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthorizationExceptionHandler.class);
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {

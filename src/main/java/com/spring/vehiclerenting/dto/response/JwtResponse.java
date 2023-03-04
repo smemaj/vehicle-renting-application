@@ -1,4 +1,4 @@
-package com.spring.vehiclerenting.payload.response;
+package com.spring.vehiclerenting.dto.response;
 import java.util.List;
 public class JwtResponse {
 

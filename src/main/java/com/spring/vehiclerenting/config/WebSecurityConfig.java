@@ -1,9 +1,8 @@
-package com.spring.vehiclerenting.security;
+package com.spring.vehiclerenting.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -15,9 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.spring.vehiclerenting.security.jwt.AuthEntryPointJwt;
-import com.spring.vehiclerenting.security.jwt.AuthTokenFilter;
-import com.spring.vehiclerenting.security.service.impl.UserDetailsServiceImpl;
+import com.spring.vehiclerenting.exception.AuthorizationExceptionHandler;
+import com.spring.vehiclerenting.config.filter.AuthTokenFilter;
+import com.spring.vehiclerenting.service.impl.UserDetailsServiceImpl;
 
 @Configuration
 @EnableGlobalMethodSecurity(
@@ -27,7 +26,7 @@ public class WebSecurityConfig {
     UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+    private AuthorizationExceptionHandler unauthorizedHandler;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {

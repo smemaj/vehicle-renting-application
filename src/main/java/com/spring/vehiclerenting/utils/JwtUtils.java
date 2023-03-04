@@ -1,6 +1,6 @@
-package com.spring.vehiclerenting.security.jwt;
+package com.spring.vehiclerenting.utils;
 
-import com.spring.vehiclerenting.security.service.impl.UserDetailsImpl;
+import com.spring.vehiclerenting.service.impl.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

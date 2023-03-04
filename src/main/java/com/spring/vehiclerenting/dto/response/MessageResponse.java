@@ -1,4 +1,4 @@
-package com.spring.vehiclerenting.payload.response;
+package com.spring.vehiclerenting.dto.response;
 
 public class MessageResponse {
 

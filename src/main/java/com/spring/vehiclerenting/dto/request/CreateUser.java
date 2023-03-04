@@ -1,4 +1,4 @@
-package com.spring.vehiclerenting.payload.request;
+package com.spring.vehiclerenting.dto.request;
 
 import com.spring.vehiclerenting.model.Role;
 

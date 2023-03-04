@@ -1,4 +1,4 @@
-package com.spring.vehiclerenting.security.service.impl;
+package com.spring.vehiclerenting.service.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.vehiclerenting.model.User;
