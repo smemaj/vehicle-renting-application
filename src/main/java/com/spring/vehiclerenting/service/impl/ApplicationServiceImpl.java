@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
+
 
 
 @Service
@@ -33,6 +35,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Autowired
     private HttpServletRequest request;
 
+    Date localDate = new Date();
+
     @Override
     public Set<Application> listApplications(){
         String headerAuth = request.getHeader("Authorization");
@@ -42,7 +46,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
         User user = this.userRepository.findByUsername(username);
 
-        return user.getApplications();
+        Set<Application> apps= new HashSet<>();
+        for (Application app:user.getApplications()) {
+            apps.add(app);
+        }
+
+        return apps;
     }
 
     @Override
@@ -104,6 +113,23 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.userRepository.save(user);
 
         return this.applicationRepository.save(app);
+    }
+
+    @Override
+    public Set<Application> filterByEndDate(){
+        String headerAuth = request.getHeader("Authorization");
+        String jwt= headerAuth.substring(7, headerAuth.length());
+        String username = jwtUtils.getUserNameFromJwtToken(jwt);
+
+        User user = this.userRepository.findByUsername(username);
+
+        Set<Application> apps= new HashSet<>();
+        for (Application app:user.getApplications()){
+            if (app.getEndDate().before(localDate)){
+                apps.add(app);
+            }
+        }
+        return apps;
     }
 
 

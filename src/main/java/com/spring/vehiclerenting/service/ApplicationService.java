@@ -13,4 +13,6 @@ public interface ApplicationService {
     void deleteApplication(Long applicationId);
 
     Set<Application> listApplications();
+
+    Set<Application> filterByEndDate();
 }

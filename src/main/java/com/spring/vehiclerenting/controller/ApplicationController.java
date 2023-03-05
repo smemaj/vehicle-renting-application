@@ -37,6 +37,12 @@ public class ApplicationController {
         return new ResponseEntity<>(applicationService.listApplications(), HttpStatus.OK);
     }
 
+    @GetMapping("/filter")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Set<Application>> filterByEndDate() {
+        return new ResponseEntity<>(applicationService.filterByEndDate(), HttpStatus.OK);
+    }
+
     @PostMapping("/create")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createApplication(@Valid @RequestBody CreateApplication createApplication){
