@@ -132,5 +132,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         return apps;
     }
 
+    @Override
+    public Application updateApplicationStatus(Long applicationId, String status) {
+        Application app= this.applicationRepository.getReferenceById(applicationId);
+        app.setStatus(status);
+        return this.applicationRepository.save(app);
+    }
+
 
 }

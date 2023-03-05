@@ -15,4 +15,6 @@ public interface ApplicationService {
     Set<Application> listApplications();
 
     Set<Application> filterByEndDate();
+
+    Application updateApplicationStatus(Long applicationId, String status);
 }

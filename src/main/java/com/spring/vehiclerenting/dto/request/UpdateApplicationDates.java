@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
-public class UpdateApplication {
+public class UpdateApplicationDates {
 
     private Long applicationId;
 

@@ -2,7 +2,8 @@ package com.spring.vehiclerenting.controller;
 
 import com.spring.vehiclerenting.dto.request.CreateApplication;
 import com.spring.vehiclerenting.dto.request.DeleteApplication;
-import com.spring.vehiclerenting.dto.request.UpdateApplication;
+import com.spring.vehiclerenting.dto.request.UpdateApplicationDates;
+import com.spring.vehiclerenting.dto.request.UpdateApplicationStatus;
 import com.spring.vehiclerenting.dto.response.MessageResponse;
 import com.spring.vehiclerenting.model.Application;
 import com.spring.vehiclerenting.service.ApplicationService;
@@ -13,7 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -59,9 +59,16 @@ public class ApplicationController {
 
     @PutMapping("/update")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> updateApplication(@Valid @RequestBody UpdateApplication updateApplication){
-        this.applicationService.updateApplicationDates(updateApplication.getApplicationId(), updateApplication.getStartDate(), updateApplication.getEndDate());
+    public ResponseEntity<?> updateApplication(@Valid @RequestBody UpdateApplicationDates updateApplicationDates){
+        this.applicationService.updateApplicationDates(updateApplicationDates.getApplicationId(), updateApplicationDates.getStartDate(), updateApplicationDates.getEndDate());
         return ResponseEntity.ok(new MessageResponse("Application dates updated successfully!"));
+    }
+
+    @PutMapping("/status")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateApplicationStatus(@Valid @RequestBody UpdateApplicationStatus updateApplication){
+        this.applicationService.updateApplicationStatus(updateApplication.getApplicationId(), updateApplication.getNewStatus());
+        return ResponseEntity.ok(new MessageResponse("Application status updated successfully!"));
     }
 
 
