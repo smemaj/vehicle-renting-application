@@ -1,12 +1,9 @@
 package com.spring.vehiclerenting.controller;
 
-
 import com.spring.vehiclerenting.dto.request.*;
 import com.spring.vehiclerenting.dto.response.MessageResponse;
 import com.spring.vehiclerenting.errors.exception.UserDoesNotExistException;
-import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
-import com.spring.vehiclerenting.service.ApplicationService;
 import com.spring.vehiclerenting.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,30 +24,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
     private PasswordEncoder encoder;
-
-    @Autowired
-    private ApplicationService applicationService;
-
-    @GetMapping("/all")
-    public String allAccess() {
-        return "Public Content.";
-    }
-
-    @GetMapping("/userRole")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public String userAccess() {
-        return "User Content.";
-    }
-
-    @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String adminAccess() {
-        return "Admin Board.";
-    }
 
     @PutMapping("/updatePassword")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
