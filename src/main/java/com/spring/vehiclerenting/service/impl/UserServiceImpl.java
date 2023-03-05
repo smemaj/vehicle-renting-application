@@ -1,7 +1,9 @@
 package com.spring.vehiclerenting.service.impl;
 
+import com.spring.vehiclerenting.errors.exception.RoleNotFoundException;
 import com.spring.vehiclerenting.model.Role;
 import com.spring.vehiclerenting.model.User;
+import com.spring.vehiclerenting.model.UserRoles;
 import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
 import com.spring.vehiclerenting.service.UserService;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -67,8 +70,58 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(String username, String password, String email, String phone, Set<Role> roles) {
-        User user = new User(username, password, email, phone, roles);
+    public void createUser(String username, String password, String email, String phone, Set<String> roles) {
+        User user = new User(username,
+                encoder.encode(password),
+                email);
+
+        Set<Role> newRoles = new HashSet<>();
+
+        if (roles == null) {
+            Role userRole = roleRepository.findByName(UserRoles.ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            newRoles.add(userRole);
+        } else {
+            roles.forEach(role -> {
+                switch (role) {
+                    case "admin":
+                        Role adminRole = null;
+                        try {
+                            adminRole = roleRepository.findByName(UserRoles.ROLE_ADMIN)
+                                    .orElseThrow(() -> new RoleNotFoundException(UserRoles.ROLE_ADMIN));
+                        } catch (RoleNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
+                        newRoles.add(adminRole);
+
+                        break;
+                    default:
+                        Role userRole = null;
+                        try {
+                            userRole = roleRepository.findByName(UserRoles.ROLE_USER)
+                                    .orElseThrow(() -> new RoleNotFoundException(UserRoles.ROLE_USER));
+                        } catch (RoleNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
+                        newRoles.add(userRole);
+                }
+            });
+        }
+
+        user.setRoles(newRoles);
+        userRepository.save(user);
+
         this.userRepository.save(user);
     }
 }
+
+
+
+
+
+
+
+
+
+
+

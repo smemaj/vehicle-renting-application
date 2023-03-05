@@ -6,18 +6,25 @@ import javax.validation.constraints.*;
 public class Signup {
 
     @NotNull
-    @Size(min = 3, max = 20)
     private String username;
 
     @NotNull
-    @Size(max = 50)
     private String email;
 
     private Set<String> role;
 
     @NotNull
-    @Size(min = 6, max = 40)
     private String password;
+
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getUsername() {
         return username;

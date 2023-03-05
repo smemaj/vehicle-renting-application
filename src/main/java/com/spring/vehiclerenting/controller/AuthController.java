@@ -1,19 +1,15 @@
 package com.spring.vehiclerenting.controller;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import com.spring.vehiclerenting.model.Role;
-import com.spring.vehiclerenting.model.User;
-import com.spring.vehiclerenting.model.UserRoles;
 import com.spring.vehiclerenting.dto.request.Login;
 import com.spring.vehiclerenting.dto.request.Signup;
 import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
+import com.spring.vehiclerenting.service.UserService;
 import com.spring.vehiclerenting.utils.JwtUtils;
 import com.spring.vehiclerenting.service.impl.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +40,7 @@ public class AuthController {
     UserRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+   UserService userService;
 
     @Autowired
     PasswordEncoder encoder;
@@ -78,46 +74,14 @@ public class AuthController {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body(new MessageResponse("Error: User with this username already exists!"));
         }
-
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+                    .body(new MessageResponse("Error: User with this email already exists!"));
         }
-
-        User user = new User(signUpRequest.getUsername(),
-                encoder.encode(signUpRequest.getPassword()),
-                signUpRequest.getEmail());
-
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(UserRoles.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(UserRoles.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(UserRoles.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
-
-        user.setRoles(roles);
-        userRepository.save(user);
-
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        this.userService.createUser(signUpRequest.getUsername(), encoder.encode(signUpRequest.getPassword()), signUpRequest.getEmail(), signUpRequest.getPhone(), signUpRequest.getRole());
+        return ResponseEntity.ok(new MessageResponse("User added successfully!"));
     }
 }

@@ -24,6 +24,6 @@ public interface UserService {
 
     void deleteUser(String username);
 
-    void createUser(String username, String password, String email, String phone, Set<Role> roles);
+    void createUser(String username, String password, String email, String phone, Set<String> roles);
 }
 

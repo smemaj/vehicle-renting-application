@@ -24,6 +24,11 @@ public class Vehicle {
     @NotNull
     private String year;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column
+    private VehicleType type;
+
     @OneToMany(fetch = FetchType.LAZY)
 //    @JoinTable(	name = "rent_applications",
 //            joinColumns = @JoinColumn(name = "vehicle_id"),
@@ -33,10 +38,19 @@ public class Vehicle {
     public Vehicle() {
     }
 
-    public Vehicle(@NotNull String name, @NotNull String model, @NotNull String year) {
+//    public Vehicle(@NotNull String name, @NotNull String model, @NotNull String year) {
+//        this.name = name;
+//        this.model = model;
+//        this.year = year;
+//    }
+
+    public Vehicle(Long id, String name, String model, String year, VehicleType type, Set<Application> applications) {
+        this.id = id;
         this.name = name;
         this.model = model;
         this.year = year;
+        this.type = type;
+        this.applications = applications;
     }
 
     public Long getId() {

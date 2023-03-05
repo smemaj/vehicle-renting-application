@@ -1,6 +1,8 @@
 package com.spring.vehiclerenting.service.impl;
 
+import com.spring.vehiclerenting.errors.exception.CannotUpdateStatusException;
 import com.spring.vehiclerenting.model.Application;
+import com.spring.vehiclerenting.model.ApplicationStatus;
 import com.spring.vehiclerenting.model.User;
 import com.spring.vehiclerenting.model.Vehicle;
 import com.spring.vehiclerenting.repository.ApplicationRepository;
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
 
+import static com.spring.vehiclerenting.model.ApplicationStatus.CREATED;
+import static com.spring.vehiclerenting.model.ApplicationStatus.SUBMITTED;
 
 
 @Service
@@ -65,7 +69,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
         User user = this.userRepository.findByUsername(username);
 
-        Application application = new Application("submitted", vehicle, user, startDate, endDate);
+        Application application = new Application(vehicle, user, startDate, endDate, CREATED);
         this.applicationRepository.save(application);
 
         vehicle.getApplications().add(application);
@@ -88,9 +92,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application app= this.applicationRepository.getReferenceById(applicationId);
         Vehicle vehicle=app.getVehicle();
 
+        this.applicationRepository.deleteById(applicationId);
         vehicle.getApplications().remove(app);
         user.getApplications().remove(app);
-        this.applicationRepository.deleteById(applicationId);
     }
 
     @Override
@@ -133,11 +137,28 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application updateApplicationStatus(Long applicationId, String status) {
+    public Application updateApplicationStatusUser(Long applicationId, ApplicationStatus status) throws CannotUpdateStatusException {
         Application app= this.applicationRepository.getReferenceById(applicationId);
-        app.setStatus(status);
+        if (app.getStatus()==CREATED){
+            app.setStatus(status);
+        }else {
+            throw new CannotUpdateStatusException(applicationId);
+        }
         return this.applicationRepository.save(app);
     }
+
+    @Override
+    public Application updateApplicationStatusAdm(Long applicationId, ApplicationStatus status) throws CannotUpdateStatusException {
+        Application app= this.applicationRepository.getReferenceById(applicationId);
+        if (app.getStatus()==SUBMITTED){
+            app.setStatus(status);
+        }else {
+            throw new CannotUpdateStatusException(applicationId);
+        }
+        return this.applicationRepository.save(app);
+    }
+
+
 
 
 }

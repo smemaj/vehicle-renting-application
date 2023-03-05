@@ -42,17 +42,19 @@ public class UserController {
         if (!userRepository.existsByUsername(userUpdate.getUsername())) {
             throw new UserDoesNotExistException(userUpdate.getUsername());
         }
-        if (userRepository.existsByEmail(userUpdate.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: User with this email already exists!"));
-        }
 
         if (userRepository.existsByUsername(userUpdate.getNewUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: User with this username already exists!"));
         }
+
+        if (userRepository.existsByEmail(userUpdate.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User with this email already exists!"));
+        }
+
         this.userService.updateUser(userUpdate.getUsername(), userUpdate.getNewUsername(), userUpdate.getEmail(), userUpdate.getPhone());
         return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
     }
@@ -69,7 +71,7 @@ public class UserController {
 
     @PostMapping("/createUser")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUser createUser){
+    public ResponseEntity<?> createUser(@Valid @RequestBody Signup createUser){
         if (userRepository.existsByUsername(createUser.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -80,7 +82,7 @@ public class UserController {
                     .badRequest()
                     .body(new MessageResponse("Error: User with this email already exists!"));
         }
-        this.userService.createUser(createUser.getUsername(), encoder.encode(createUser.getPassword()), createUser.getEmail(), createUser.getPhone(), createUser.getRoles());
+        this.userService.createUser(createUser.getUsername(), encoder.encode(createUser.getPassword()), createUser.getEmail(), createUser.getPhone(), createUser.getRole());
         return ResponseEntity.ok(new MessageResponse("User added successfully!"));
     }
 

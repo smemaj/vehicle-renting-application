@@ -16,18 +16,11 @@ public class Application {
     private Long id;
 
     @NotNull
-    @Column (name = "application_status", columnDefinition = "varchar(10) default 'submitted'")
-    private String status;
-
-    @NotNull
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date creationDate=new Date();
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
-//    @JoinTable(	name = "rent_applications",
-//            joinColumns = @JoinColumn(name = "application_id"),
-//            inverseJoinColumns = @JoinColumn(name = "vehicle_id"))
     private Vehicle vehicle;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -42,6 +35,11 @@ public class Application {
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date endDate;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private ApplicationStatus status;
+
     public Application() {
     }
 
@@ -49,30 +47,12 @@ public class Application {
         this.vehicle = vehicle;
     }
 
-    public Application(String status, Date creationDate) {
-        this.status = status;
-        this.creationDate = creationDate;
-    }
-
-    public Application(String status, Vehicle vehicle, User user) {
-        this.status = status;
-        this.vehicle = vehicle;
-        this.user = user;
-    }
-
-    public Application(String status, Date creationDate, Vehicle vehicle, User user) {
-        this.status = status;
-        this.creationDate = creationDate;
-        this.vehicle = vehicle;
-        this.user = user;
-    }
-
-    public Application(String status, Vehicle vehicle, User user, Date startDate, Date endDate) {
-        this.status = status;
+    public Application(Vehicle vehicle, User user, Date startDate, Date endDate, ApplicationStatus status) {
         this.vehicle = vehicle;
         this.user = user;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.status = status;
     }
 
     public Long getId() {
@@ -81,14 +61,6 @@ public class Application {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Date getCreationDate() {
@@ -107,27 +79,35 @@ public class Application {
         this.vehicle = vehicle;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getStartDate() {
+        return startDate;
     }
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
+    public Date getEndDate() {
+        return endDate;
+    }
+
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public ApplicationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ApplicationStatus status) {
+        this.status = status;
     }
 }

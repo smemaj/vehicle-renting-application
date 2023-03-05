@@ -3,9 +3,10 @@ package com.spring.vehiclerenting.controller;
 import com.spring.vehiclerenting.dto.request.CreateApplication;
 import com.spring.vehiclerenting.dto.request.DeleteApplication;
 import com.spring.vehiclerenting.dto.request.UpdateApplicationDates;
-import com.spring.vehiclerenting.dto.request.UpdateApplicationStatus;
 import com.spring.vehiclerenting.dto.response.MessageResponse;
+import com.spring.vehiclerenting.errors.exception.CannotUpdateStatusException;
 import com.spring.vehiclerenting.model.Application;
+import com.spring.vehiclerenting.model.ApplicationStatus;
 import com.spring.vehiclerenting.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,13 +24,6 @@ public class ApplicationController {
 
     @Autowired
     private ApplicationService applicationService;
-
-//    @GetMapping("/applications")
-//    @PreAuthorize("hasRole('USER')")
-//    public ResponseEntity<?> listApplications(){
-//        this.applicationService.listApplications();
-//        return ResponseEntity.ok(new MessageResponse("List of all applications!"));
-//    }
 
     @GetMapping("/list")
     @PreAuthorize("hasRole('USER')")
@@ -64,12 +58,27 @@ public class ApplicationController {
         return ResponseEntity.ok(new MessageResponse("Application dates updated successfully!"));
     }
 
-    @PutMapping("/status")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> updateApplicationStatus(@Valid @RequestBody UpdateApplicationStatus updateApplication){
-        this.applicationService.updateApplicationStatus(updateApplication.getApplicationId(), updateApplication.getNewStatus());
-        return ResponseEntity.ok(new MessageResponse("Application status updated successfully!"));
+    @PutMapping("{id}/submit")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> submitApplication(@PathVariable Long id) throws CannotUpdateStatusException {
+        this.applicationService.updateApplicationStatusUser(id, ApplicationStatus.SUBMITTED);
+        return ResponseEntity.ok(new MessageResponse("Application submitted for approval"));
     }
+
+    @PutMapping("{id}/approve")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> approveApplication(@PathVariable Long id) throws CannotUpdateStatusException {
+        this.applicationService.updateApplicationStatusAdm(id, ApplicationStatus.APPROVED);
+        return ResponseEntity.ok(new MessageResponse("Application is approved"));
+    }
+
+    @PutMapping("{id}/reject")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> rejectApplication(@PathVariable Long id) throws CannotUpdateStatusException {
+        this.applicationService.updateApplicationStatusAdm(id, ApplicationStatus.REJECTED);
+        return ResponseEntity.ok(new MessageResponse("Application is rejected"));
+    }
+
 
 
 }
