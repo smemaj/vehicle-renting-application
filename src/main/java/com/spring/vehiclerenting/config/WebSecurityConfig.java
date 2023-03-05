@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.spring.vehiclerenting.exception.AuthorizationExceptionHandler;
+import com.spring.vehiclerenting.errors.exception.AuthorizationExceptionHandler;
 import com.spring.vehiclerenting.config.filter.AuthTokenFilter;
 import com.spring.vehiclerenting.service.impl.UserDetailsServiceImpl;
 

@@ -3,6 +3,7 @@ package com.spring.vehiclerenting.controller;
 
 import com.spring.vehiclerenting.dto.request.*;
 import com.spring.vehiclerenting.dto.response.MessageResponse;
+import com.spring.vehiclerenting.errors.exception.UserDoesNotExistException;
 import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
 import com.spring.vehiclerenting.service.ApplicationService;
@@ -53,11 +54,12 @@ public class UserController {
 
     @PutMapping("/updatePassword")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> updatePassword(@Valid @RequestBody PasswordUpdate passwordUpdate){
+    public ResponseEntity<?> updatePassword(@Valid @RequestBody PasswordUpdate passwordUpdate) throws UserDoesNotExistException {
         if (!userRepository.existsByUsername(passwordUpdate.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: User with this username does not exist!"));
+            throw new UserDoesNotExistException(passwordUpdate.getUsername());
+//            return ResponseEntity
+//                    .badRequest()
+//                    .body(new MessageResponse("Error: User with this username does not exist!"));
         }
         this.userService.updatePassword(passwordUpdate.getUsername(), passwordUpdate.getOldPassword(), passwordUpdate.getNewPassword());
         return ResponseEntity.ok(new MessageResponse("User password updated successfully!"));
