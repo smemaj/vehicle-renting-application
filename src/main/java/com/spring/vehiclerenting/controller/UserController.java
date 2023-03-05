@@ -57,26 +57,27 @@ public class UserController {
     public ResponseEntity<?> updatePassword(@Valid @RequestBody PasswordUpdate passwordUpdate) throws UserDoesNotExistException {
         if (!userRepository.existsByUsername(passwordUpdate.getUsername())) {
             throw new UserDoesNotExistException(passwordUpdate.getUsername());
-//            return ResponseEntity
-//                    .badRequest()
-//                    .body(new MessageResponse("Error: User with this username does not exist!"));
         }
         this.userService.updatePassword(passwordUpdate.getUsername(), passwordUpdate.getOldPassword(), passwordUpdate.getNewPassword());
         return ResponseEntity.ok(new MessageResponse("User password updated successfully!"));
     }
 
     @PutMapping("/updateUser")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdate userUpdate) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdate userUpdate) throws UserDoesNotExistException {
         if (!userRepository.existsByUsername(userUpdate.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: User with this username does not exist!"));
+            throw new UserDoesNotExistException(userUpdate.getUsername());
         }
         if (userRepository.existsByEmail(userUpdate.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: User with this email already exists!"));
+        }
+
+        if (userRepository.existsByUsername(userUpdate.getNewUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User with this username already exists!"));
         }
         this.userService.updateUser(userUpdate.getUsername(), userUpdate.getNewUsername(), userUpdate.getEmail(), userUpdate.getPhone());
         return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
@@ -84,11 +85,9 @@ public class UserController {
 
     @DeleteMapping("/deleteUser")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> deleteUser(@Valid @RequestBody DeleteUser deleteUser){
+    public ResponseEntity<?> deleteUser(@Valid @RequestBody DeleteUser deleteUser) throws UserDoesNotExistException {
         if (!userRepository.existsByUsername(deleteUser.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: User with this username does not exist!"));
+            throw new UserDoesNotExistException(deleteUser.getUsername());
         }
         this.userService.deleteUser(deleteUser.getUsername());
         return ResponseEntity.ok(new MessageResponse("User deleted successfully!"));

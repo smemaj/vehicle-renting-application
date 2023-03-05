@@ -1,4 +1,4 @@
-package com.spring.vehiclerenting.errors.exception;
+package com.spring.vehiclerenting.errors.handler;
 
 import java.io.IOException;
 import java.util.HashMap;
