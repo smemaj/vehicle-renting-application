@@ -119,6 +119,14 @@ public class Application {
         return user;
     }
 
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     public void setUser(User user) {
         this.user = user;
     }

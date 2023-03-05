@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class UpdateApplication {
 
-    private Long appId;
+    private Long applicationId;
 
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date startDate;
@@ -14,12 +14,12 @@ public class UpdateApplication {
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date endDate;
 
-    public Long getAppId() {
-        return appId;
+    public Long getApplicationId() {
+        return applicationId;
     }
 
-    public void setAppId(Long appId) {
-        this.appId = appId;
+    public void setApplicationId(Long applicationId) {
+        this.applicationId = applicationId;
     }
 
     public Date getStartDate() {

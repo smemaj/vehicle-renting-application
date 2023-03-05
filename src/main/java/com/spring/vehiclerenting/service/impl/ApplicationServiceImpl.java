@@ -70,7 +70,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void deleteApplication(Long applicationId) {
-        //Vehicle vehicle = this.vehicleRepository.getReferenceById(vehicleId);
 
         String headerAuth = request.getHeader("Authorization");
         String jwt= headerAuth.substring(7, headerAuth.length());
@@ -83,6 +82,28 @@ public class ApplicationServiceImpl implements ApplicationService {
         vehicle.getApplications().remove(app);
         user.getApplications().remove(app);
         this.applicationRepository.deleteById(applicationId);
+    }
+
+    @Override
+    public Application updateApplicationDates(Long applicationId, Date startDate, Date endDate){
+        String headerAuth = request.getHeader("Authorization");
+        String jwt= headerAuth.substring(7, headerAuth.length());
+        String username = jwtUtils.getUserNameFromJwtToken(jwt);
+
+        User user = this.userRepository.findByUsername(username);
+        Application app= this.applicationRepository.getReferenceById(applicationId);
+        Vehicle vehicle=app.getVehicle();
+
+        app.setStartDate(startDate);
+        app.setEndDate(endDate);
+
+        vehicle.getApplications().add(app);
+        user.getApplications().add(app);
+
+        this.vehicleRepository.save(vehicle);
+        this.userRepository.save(user);
+
+        return this.applicationRepository.save(app);
     }
 
 
