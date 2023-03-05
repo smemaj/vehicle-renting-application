@@ -6,7 +6,7 @@ import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
 import com.spring.vehiclerenting.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Autowired
-    private PasswordEncoder encoder;
+    private BCryptPasswordEncoder encoder;
 
 
     @Autowired
@@ -41,8 +41,7 @@ public class UserServiceImpl implements UserService {
         System.out.println("new password "+newPassword);
         System.out.println("existing username "+user.getUsername());
         System.out.println("existing password "+user.getPassword());
-        System.out.println("old password "+encoder.encode(oldPassword));
-        if(encoder.matches(user.getPassword(), oldPassword)){
+        if(this.encoder.matches(oldPassword, user.getPassword())){
             System.out.println("true");
             user.setPassword(encoder.encode(newPassword));
             System.out.println("updated password: "+user.getPassword());
