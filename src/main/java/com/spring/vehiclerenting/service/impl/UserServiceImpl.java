@@ -40,18 +40,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePassword(String username, String oldPassword, String newPassword) {
         User user = this.userRepository.findByUsername(username);
-        System.out.println("given username "+username);
-        System.out.println("old password "+oldPassword);
-        System.out.println("new password "+newPassword);
-        System.out.println("existing username "+user.getUsername());
-        System.out.println("existing password "+user.getPassword());
         if(this.encoder.matches(oldPassword, user.getPassword())){
-            System.out.println("true");
             user.setPassword(encoder.encode(newPassword));
-            System.out.println("updated password: "+user.getPassword());
             this.userRepository.save(user);
-        }else {
-            System.out.println("false");
         }
     }
 
