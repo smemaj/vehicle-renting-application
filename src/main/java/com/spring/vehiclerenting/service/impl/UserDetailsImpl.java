@@ -69,10 +69,6 @@ public class UserDetailsImpl implements UserDetails {
         return email;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
     @Override
     public String getUsername() {
         return username;

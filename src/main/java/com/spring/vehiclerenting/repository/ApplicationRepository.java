@@ -11,6 +11,4 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     @Override
     void deleteById(Long aLong);
-
-    //    Application findByAppId(Long id);
 }
