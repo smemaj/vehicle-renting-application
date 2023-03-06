@@ -16,14 +16,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.spring.vehiclerenting.errors.handler.AuthorizationExceptionHandler;
 import com.spring.vehiclerenting.config.filter.AuthTokenFilter;
-import com.spring.vehiclerenting.service.impl.UserDetailsServiceImpl;
+import com.spring.vehiclerenting.service.impl.JwtUserDetailsServiceImpl;
 
 @Configuration
 @EnableGlobalMethodSecurity(
         prePostEnabled = true)
 public class WebSecurityConfig {
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    JwtUserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private AuthorizationExceptionHandler unauthorizedHandler;

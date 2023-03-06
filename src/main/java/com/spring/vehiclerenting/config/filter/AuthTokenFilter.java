@@ -1,6 +1,6 @@
 package com.spring.vehiclerenting.config.filter;
 
-import com.spring.vehiclerenting.service.impl.UserDetailsServiceImpl;
+import com.spring.vehiclerenting.service.impl.JwtUserDetailsServiceImpl;
 import com.spring.vehiclerenting.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,7 +24,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private JwtUserDetailsServiceImpl userDetailsService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 

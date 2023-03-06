@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+    private JwtUserDetailsServiceImpl jwtUserDetailsServiceImpl;
 
     @Autowired
     private ApplicationRepository applicationRepository;
