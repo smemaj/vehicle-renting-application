@@ -14,7 +14,6 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "email")
         })
 public class User {
-//It has 5 fields: id, username, email, password, roles.
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,16 +33,8 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinTable(	name = "rent_applications",
-//            joinColumns = @JoinColumn(name = "vehicle_id"),
-//            inverseJoinColumns = @JoinColumn(name = "application_id"))
     private Set<Application> applications = new HashSet<>();
 
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinTable(	name = "rent_applications",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "application_id"))
-//    private Set<Application> applications = new HashSet<>();
 
     public Set<Application> getApplications() {
         return applications;

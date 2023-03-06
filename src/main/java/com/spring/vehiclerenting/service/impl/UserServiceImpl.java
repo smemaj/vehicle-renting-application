@@ -1,11 +1,12 @@
 package com.spring.vehiclerenting.service.impl;
 
 import com.spring.vehiclerenting.errors.exception.RoleNotFoundException;
-import com.spring.vehiclerenting.model.Role;
-import com.spring.vehiclerenting.model.User;
-import com.spring.vehiclerenting.model.UserRoles;
+import com.spring.vehiclerenting.model.*;
+import com.spring.vehiclerenting.repository.ApplicationRepository;
 import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
+import com.spring.vehiclerenting.repository.VehicleRepository;
+import com.spring.vehiclerenting.service.ApplicationService;
 import com.spring.vehiclerenting.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,10 +32,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
 
-    @Override
-    public void deleteUser(Long userId) {
+    @Autowired
+    private ApplicationRepository applicationRepository;
 
-    }
+    @Autowired
+    private VehicleRepository vehicleRepository;
 
     @Override
     public void updatePassword(String username, String oldPassword, String newPassword) {
@@ -66,13 +68,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(String username) {
         User user = this.userRepository.findByUsername(username);
+        Set<Application> apps = user.getApplications();
+
+        Vehicle vehicle;
+
+        for(Application app:apps){
+            vehicle=app.getVehicle();
+            vehicle.getApplications().remove(app);
+            this.vehicleRepository.save(vehicle);
+        }
+
+        this.applicationRepository.deleteAll(apps);
         this.userRepository.delete(user);
     }
 
     @Override
     public void createUser(String username, String password, String email, String phone, Set<String> roles) {
         User user = new User(username,
-                encoder.encode(password),
+                password,
                 email);
 
         Set<Role> newRoles = new HashSet<>();

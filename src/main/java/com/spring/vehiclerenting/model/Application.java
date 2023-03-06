@@ -19,11 +19,11 @@ public class Application {
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date creationDate=new Date();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JsonIgnore
     private Vehicle vehicle;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JsonIgnore
     private User user;
 

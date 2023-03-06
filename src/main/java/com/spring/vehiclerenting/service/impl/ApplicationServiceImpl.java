@@ -92,9 +92,13 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application app= this.applicationRepository.getReferenceById(applicationId);
         Vehicle vehicle=app.getVehicle();
 
-        this.applicationRepository.deleteById(applicationId);
         vehicle.getApplications().remove(app);
+        this.vehicleRepository.save(vehicle);
+
         user.getApplications().remove(app);
+        this.userRepository.save(user);
+
+        this.applicationRepository.delete(app);
     }
 
     @Override

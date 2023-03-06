@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import com.spring.vehiclerenting.dto.request.Login;
 import com.spring.vehiclerenting.dto.request.Signup;
-import com.spring.vehiclerenting.repository.RoleRepository;
 import com.spring.vehiclerenting.repository.UserRepository;
 import com.spring.vehiclerenting.service.UserService;
 import com.spring.vehiclerenting.utils.JwtUtils;

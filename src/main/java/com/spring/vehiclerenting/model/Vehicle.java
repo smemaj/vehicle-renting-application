@@ -29,7 +29,7 @@ public class Vehicle {
     @Column
     private VehicleType type;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    @JoinTable(	name = "rent_applications",
 //            joinColumns = @JoinColumn(name = "vehicle_id"),
 //            inverseJoinColumns = @JoinColumn(name = "application_id"))
